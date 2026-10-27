@@ -19,5 +19,5 @@ create table expense(
     category_id integer references expense_category(category_id) on delete set null,
     amount money not null,
     description varchar,
-    expense_date date not null,
+    expense_date date not null
 );
