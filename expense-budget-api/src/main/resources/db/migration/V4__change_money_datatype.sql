@@ -1,0 +1,2 @@
+ALTER TABLE monthly_budget ALTER COLUMN amount TYPE DECIMAL(8, 2);
+ALTER TABLE expense ALTER COLUMN amount TYPE DECIMAL(8, 2);
