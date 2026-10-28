@@ -1,0 +1,11 @@
+package com.partnexis.mhmdkhaled.expense_budget_api.dto;
+
+import java.math.BigDecimal;
+
+public record MonthlyBudgetResponse(
+        Integer id,
+        String month, // MM-yy
+        BigDecimal amount,
+        String category) {
+
+}
