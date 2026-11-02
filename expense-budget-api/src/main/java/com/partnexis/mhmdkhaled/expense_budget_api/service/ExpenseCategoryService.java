@@ -28,6 +28,11 @@ public class ExpenseCategoryService {
         return exCatRepo.findAllByUserEmail(getUserEmail()).stream().map(this::toResponse).toList();
     }
 
+    public ExpenseCategoryResponse getByName(String categoryName) throws Exception {
+        ExpenseCategory category = exCatRepo.findByNameAndUserEmail(categoryName, getUserEmail()).orElseThrow(() -> new Exception("category not found"));
+        return toResponse(category);
+    }
+
     public ExpenseCategoryResponse create(ExpenseCategoryRequest request) throws Exception {
 
         ExpenseCategory exCat = new ExpenseCategory();
@@ -40,9 +45,9 @@ public class ExpenseCategoryService {
         return toResponse(exCatRepo.save(exCat));
     }
 
-    public ExpenseCategoryResponse update(ExpenseCategoryRequest request) throws Exception {
+    public ExpenseCategoryResponse update(String name, ExpenseCategoryRequest request) throws Exception {
 
-        ExpenseCategory exCat = exCatRepo.findByNameAndUserEmail(request.name(), getUserEmail())
+        ExpenseCategory exCat = exCatRepo.findByNameAndUserEmail(name, getUserEmail())
                 .orElseThrow(() -> new Exception("No category with this name"));
         User user = uRepo.findByEmail(getUserEmail()).orElseThrow(() -> new UsernameNotFoundException("no such user"));
 
@@ -53,8 +58,8 @@ public class ExpenseCategoryService {
         return toResponse(exCatRepo.save(exCat));
     }
 
-    public void delete(ExpenseCategoryRequest request) throws Exception {
-        ExpenseCategory exCat = exCatRepo.findByNameAndUserEmail(request.name(), getUserEmail())
+    public void delete(String name) throws Exception {
+        ExpenseCategory exCat = exCatRepo.findByNameAndUserEmail(name, getUserEmail())
                 .orElseThrow(() -> new Exception("No category with this name"));
 
         exCatRepo.delete(exCat);

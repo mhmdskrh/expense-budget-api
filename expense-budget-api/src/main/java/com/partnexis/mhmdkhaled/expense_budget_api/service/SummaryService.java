@@ -48,7 +48,7 @@ public class SummaryService {
     }
 
     private Summary createSummaries(ExpenseCategory category, String monthYear) {
-        String[] splitDate = monthYear.split("/");
+        String[] splitDate = monthYear.split("-");
         int month = Integer.parseInt(splitDate[0]);
         int year = Integer.parseInt(splitDate[1]);
 

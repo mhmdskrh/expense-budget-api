@@ -24,13 +24,14 @@ public class ExpenseService {
     private final ExpenseRepository expenseRepo;
     private final ExpenseCategoryRepository exCatRepo;
 
-    public List<Expense> getAll() {
+    public List<ExpenseResponse> getAll() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return expenseRepo.findAllByCategoryUserEmail(userDetails.getUsername());
+        return expenseRepo.findAllByCategoryUserEmail(userDetails.getUsername()).stream().map(this::toResponse)
+                .toList();
     }
 
     public List<ExpenseResponse> getAllByMonth(String mmyyyy) {
-        String[] splitDate = mmyyyy.split("/");
+        String[] splitDate = mmyyyy.split("-");
         int month = Integer.parseInt(splitDate[0]);
         int year = Integer.parseInt(splitDate[1]);
         List<Expense> expensesByMonth = expenseRepo.findAllByMonth(month, year);
@@ -75,7 +76,8 @@ public class ExpenseService {
 
     public void delete(Integer id) throws Exception {
         Expense expense = expenseRepo.findAllByCategoryUserEmail(getUserEmail()).stream()
-                .filter((e) -> e.getExpenseId() == id).findFirst().orElseThrow(() -> new Exception("Expense Not Found"));
+                .filter((e) -> e.getExpenseId() == id).findFirst()
+                .orElseThrow(() -> new Exception("Expense Not Found"));
         expenseRepo.delete(expense);
     }
 
