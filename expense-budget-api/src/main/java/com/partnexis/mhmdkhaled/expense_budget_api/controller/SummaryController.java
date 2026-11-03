@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RestController
 @RequestMapping("/api/summary")
 public class SummaryController {
-    private SummaryService sService;
+    private final SummaryService sService;
 
     @GetMapping("/{month}")
     public ResponseEntity<List<SummaryResponse>> getMonthlySummary(@PathVariable  String month) {

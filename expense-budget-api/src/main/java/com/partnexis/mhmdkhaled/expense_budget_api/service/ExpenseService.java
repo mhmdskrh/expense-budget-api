@@ -44,12 +44,6 @@ public class ExpenseService {
     public ExpenseResponse create(ExpenseRequest request) throws Exception {
         ExpenseCategory category = exCatRepo.findByNameAndUserEmail(request.category(), getUserEmail())
                 .orElseThrow(() -> new Exception("No category with this name"));
-        /*
-         * DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-         * LocalDate expenseDate = !request.expenseDate().isEmpty()
-         * ? LocalDate.parse(request.expenseDate(), formatter)
-         * : LocalDate.now();
-         */
 
         Expense expense = new Expense();
 
@@ -71,7 +65,7 @@ public class ExpenseService {
         expense.setCategory(category);
         expense.setExpenseDate(getExpenseDate(request.expenseDate()));
 
-        return toResponse(expense);
+        return toResponse(expenseRepo.save(expense));
     }
 
     public void delete(Integer id) throws Exception {
@@ -92,7 +86,7 @@ public class ExpenseService {
     }
 
     private LocalDate getExpenseDate(String dateString) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         return !dateString.isEmpty()
                 ? LocalDate.parse(dateString, formatter)
                 : LocalDate.now();

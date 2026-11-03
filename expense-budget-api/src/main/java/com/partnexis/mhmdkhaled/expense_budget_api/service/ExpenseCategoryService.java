@@ -32,7 +32,9 @@ public class ExpenseCategoryService {
     }
 
     public ExpenseCategoryResponse create(ExpenseCategoryRequest request) throws Exception {
-
+        if (exCatRepo.findByNameAndUserEmail(request.name(), getUserEmail()).isPresent()) {
+            throw new Exception("category with this name already created");
+        }
         ExpenseCategory exCat = new ExpenseCategory();
         User user = uRepo.findByEmail(getUserEmail()).orElseThrow(() -> new UsernameNotFoundException("no such user"));
 

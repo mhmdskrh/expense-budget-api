@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Summary {
-    //private String month;
     private String categoryName;
     private BigDecimal budget;
     private BigDecimal amountSpent;
