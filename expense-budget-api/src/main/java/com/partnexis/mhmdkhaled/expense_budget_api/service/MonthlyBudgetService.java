@@ -31,23 +31,15 @@ public class MonthlyBudgetService {
 
     public MonthlyBudgetResponse getById(Integer id) throws Exception {
         MonthlyBudget mb = mBRepo.findAllByCategoryUserEmail(getUserEmail()).stream()
-                .filter((budget) -> budget.getMonthlyBudgetId() == id).findFirst()
+                .filter((budget) -> budget.getId() == id).findFirst()
                 .orElseThrow(() -> new Exception("No such budget"));
         return toResponse(mb);
     }
 
     public MonthlyBudgetResponse create(MonthlyBudgetRequest request) throws Exception {
-        /*
-         * UserDetails userDetails = (UserDetails)
-         * SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-         * 
-         * String username = userDetails.getUsername();
-         * ExpenseCategory category =
-         * exCatRepo.findByNameAndUserEmail(request.category(), username).orElseThrow();
-         */
         String categoryName = request.category();
 
-        if (mBRepo.findByCategoryIdAndMonth(getCategory(categoryName).getCategoryId(), "10/2026") != null) {
+        if (mBRepo.findByCategoryIdAndMonth(getCategory(categoryName).getId(), request.month()).isPresent()) {
             throw new Exception("A budget already set for this month");
         }
 
@@ -57,7 +49,7 @@ public class MonthlyBudgetService {
         budget.setAmount(request.amount());
         budget.setCategory(getCategory(categoryName));
 
-        return toResponse(budget);
+        return toResponse(mBRepo.save(budget));
     }
 
     public MonthlyBudgetResponse update(Integer id, MonthlyBudgetRequest request) throws Exception {
@@ -67,7 +59,7 @@ public class MonthlyBudgetService {
         budget.setAmount(request.amount());
         budget.setCategory(getCategory(request.category()));
 
-        return toResponse(budget);
+        return toResponse(mBRepo.save(budget));
     }
 
     public void delete(Integer id) throws Exception {
@@ -76,7 +68,7 @@ public class MonthlyBudgetService {
     }
 
     private MonthlyBudgetResponse toResponse(MonthlyBudget mB) {
-        return new MonthlyBudgetResponse(mB.getMonthlyBudgetId(), mB.getMonth(), mB.getAmount(),
+        return new MonthlyBudgetResponse(mB.getId(), mB.getMonth(), mB.getAmount(),
                 mB.getCategory().getName());
     }
 

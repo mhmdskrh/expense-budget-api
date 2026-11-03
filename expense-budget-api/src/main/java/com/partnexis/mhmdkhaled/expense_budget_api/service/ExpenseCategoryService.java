@@ -16,8 +16,6 @@ import com.partnexis.mhmdkhaled.expense_budget_api.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
-// TODO: fetch userdetails from token
-
 @RequiredArgsConstructor
 @Service
 public class ExpenseCategoryService {
@@ -34,7 +32,9 @@ public class ExpenseCategoryService {
     }
 
     public ExpenseCategoryResponse create(ExpenseCategoryRequest request) throws Exception {
-
+        if (exCatRepo.findByNameAndUserEmail(request.name(), getUserEmail()).isPresent()) {
+            throw new Exception("category with this name already created");
+        }
         ExpenseCategory exCat = new ExpenseCategory();
         User user = uRepo.findByEmail(getUserEmail()).orElseThrow(() -> new UsernameNotFoundException("no such user"));
 
@@ -66,7 +66,7 @@ public class ExpenseCategoryService {
     }
 
     private ExpenseCategoryResponse toResponse(ExpenseCategory expenseCategory) {
-        return new ExpenseCategoryResponse(expenseCategory.getCategoryId(), expenseCategory.getName(),
+        return new ExpenseCategoryResponse(expenseCategory.getId(), expenseCategory.getName(),
                 expenseCategory.getDescription());
     }
 

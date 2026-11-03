@@ -22,16 +22,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/*
-create table monthly_budget(
-    monthly_budget_id serial primary key,
-    category_id integer references expense_category(category_id) on delete cascade,
-    month varchar not null,
-    amount money not null,
-    constraint unique_monthly_budget unique(category_id, month)
-);
- */
-
 @Data
 @Builder
 @AllArgsConstructor
@@ -44,7 +34,7 @@ public class MonthlyBudget {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "monthly_budget_id")
-    private Integer monthlyBudgetId;
+    private Integer id;
 
     @Column(nullable = false)
     private String month;

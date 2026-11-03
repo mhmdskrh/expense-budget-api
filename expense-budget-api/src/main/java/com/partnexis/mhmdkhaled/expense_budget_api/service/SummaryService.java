@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.partnexis.mhmdkhaled.expense_budget_api.dto.SummaryResponse;
+import com.partnexis.mhmdkhaled.expense_budget_api.entity.Expense;
 import com.partnexis.mhmdkhaled.expense_budget_api.entity.ExpenseCategory;
 import com.partnexis.mhmdkhaled.expense_budget_api.entity.MonthlyBudget;
 import com.partnexis.mhmdkhaled.expense_budget_api.models.Summary;
@@ -53,13 +54,21 @@ public class SummaryService {
         int year = Integer.parseInt(splitDate[1]);
 
         MonthlyBudget budget = mBRepo.findByCategory(category).orElse(null);
-        BigDecimal amountSpent = BigDecimal.ZERO;
+        double amountSpent = 0;
 
-        BigDecimal budgetAmount = budget == null ? null : budget.getAmount();
-        exRepo.findAllByCategoryIdAndMonth(category.getCategoryId(), month, year)
-                .forEach((e) -> amountSpent.add(e.getAmount()));
-        BigDecimal remainingAmount = budget == null ? null : budgetAmount.subtract(amountSpent);
+        double budgetAmount = budget == null ? null : budget.getAmount().doubleValue();
+        List<Expense> expensesByCategory = exRepo.findAllByCategoryIdAndMonth(category.getId(), month, year);
 
-        return new Summary(category.getName(), budgetAmount, amountSpent, remainingAmount);
+        for (Expense expense : expensesByCategory) {
+            amountSpent += expense.getAmount().doubleValue();
+        }
+
+        double remainingAmount = budget == null ? null : (budgetAmount - amountSpent);
+
+        return new Summary(
+                category.getName(),
+                BigDecimal.valueOf(budgetAmount),
+                BigDecimal.valueOf(amountSpent),
+                BigDecimal.valueOf(remainingAmount));
     }
 }

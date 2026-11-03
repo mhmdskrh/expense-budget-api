@@ -21,16 +21,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/*
-create table expense(
-    expense_id serial primary key,
-    category_id integer references expense_category(category_id) on delete set null,
-    amount money not null,
-    description varchar,
-    expense_date date not null
-);
-*/
-
 @Data
 @Builder
 @AllArgsConstructor
@@ -41,7 +31,7 @@ public class Expense {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "expense_id")
-    private Integer expenseId;
+    private Integer id;
 
     @Column(nullable = false)
     private BigDecimal amount;

@@ -24,10 +24,9 @@ public class UserService {
     private final JwtService jwtService;
 
     public LoginResponse register(RegisterRequest request) throws Exception {
-        if (uRepo.findByEmail(request.email()) != null) {
+        if (uRepo.findByEmail(request.email()).isPresent()) {
             throw new Exception("Email already used");
         }
-
         User user = User.builder().name(request.name()).email(request.email())
                 .password(passEncoder.encode(request.password())).role(Role.USER).build();
 
@@ -36,8 +35,6 @@ public class UserService {
         var token = jwtService.generateToken(user);
 
         return new LoginResponse(token);
-
-        // TODO: configure jwt and return in login response
     }
 
     public LoginResponse login(LoginRequest request) {

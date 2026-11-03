@@ -20,16 +20,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/*
-create table expense_category(
-    category_id serial primary key,
-    name varchar not null,
-    description varchar,
-    user_id integer references _user(id) on delete cascade,
-    constraint unique_category_per_user unique(user_id, name)
-); 
-*/
-
 @Data
 @Builder
 @AllArgsConstructor
@@ -43,7 +33,7 @@ public class ExpenseCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
-    private Integer categoryId;
+    private Integer id;
 
     @Column(nullable = false)
     private String name;

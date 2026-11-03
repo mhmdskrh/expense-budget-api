@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RestController
 @RequestMapping("/api/categories")
 public class ExpenseCategoryController {
-    private ExpenseCategoryService exCatService;
+    private final ExpenseCategoryService exCatService;
 
     @GetMapping
     public ResponseEntity<List<ExpenseCategoryResponse>> getAll() {
