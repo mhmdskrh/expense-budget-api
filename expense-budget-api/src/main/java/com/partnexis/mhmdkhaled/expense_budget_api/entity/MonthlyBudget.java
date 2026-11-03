@@ -44,7 +44,7 @@ public class MonthlyBudget {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "monthly_budget_id")
-    private Integer monthlyBudgetId;
+    private Integer id;
 
     @Column(nullable = false)
     private String month;

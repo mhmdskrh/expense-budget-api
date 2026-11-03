@@ -31,7 +31,7 @@ public class MonthlyBudgetService {
 
     public MonthlyBudgetResponse getById(Integer id) throws Exception {
         MonthlyBudget mb = mBRepo.findAllByCategoryUserEmail(getUserEmail()).stream()
-                .filter((budget) -> budget.getMonthlyBudgetId() == id).findFirst()
+                .filter((budget) -> budget.getId() == id).findFirst()
                 .orElseThrow(() -> new Exception("No such budget"));
         return toResponse(mb);
     }
@@ -47,7 +47,7 @@ public class MonthlyBudgetService {
          */
         String categoryName = request.category();
 
-        if (mBRepo.findByCategoryIdAndMonth(getCategory(categoryName).getCategoryId(), "10/2026") != null) {
+        if (mBRepo.findByCategoryIdAndMonth(getCategory(categoryName).getId(), "10/2026") != null) {
             throw new Exception("A budget already set for this month");
         }
 
@@ -76,7 +76,7 @@ public class MonthlyBudgetService {
     }
 
     private MonthlyBudgetResponse toResponse(MonthlyBudget mB) {
-        return new MonthlyBudgetResponse(mB.getMonthlyBudgetId(), mB.getMonth(), mB.getAmount(),
+        return new MonthlyBudgetResponse(mB.getId(), mB.getMonth(), mB.getAmount(),
                 mB.getCategory().getName());
     }
 

@@ -64,7 +64,7 @@ public class ExpenseCategoryService {
     }
 
     private ExpenseCategoryResponse toResponse(ExpenseCategory expenseCategory) {
-        return new ExpenseCategoryResponse(expenseCategory.getCategoryId(), expenseCategory.getName(),
+        return new ExpenseCategoryResponse(expenseCategory.getId(), expenseCategory.getName(),
                 expenseCategory.getDescription());
     }
 

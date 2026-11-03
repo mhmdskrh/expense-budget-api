@@ -76,14 +76,14 @@ public class ExpenseService {
 
     public void delete(Integer id) throws Exception {
         Expense expense = expenseRepo.findAllByCategoryUserEmail(getUserEmail()).stream()
-                .filter((e) -> e.getExpenseId() == id).findFirst()
+                .filter((e) -> e.getId() == id).findFirst()
                 .orElseThrow(() -> new Exception("Expense Not Found"));
         expenseRepo.delete(expense);
     }
 
     private ExpenseResponse toResponse(Expense ex) {
         return new ExpenseResponse(
-                ex.getExpenseId(),
+                ex.getId(),
                 ex.getAmount(),
                 ex.getExpenseDate().toString(),
                 ex.getDescription(),

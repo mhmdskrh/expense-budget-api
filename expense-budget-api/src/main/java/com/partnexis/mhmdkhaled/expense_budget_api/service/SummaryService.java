@@ -56,7 +56,7 @@ public class SummaryService {
         BigDecimal amountSpent = BigDecimal.ZERO;
 
         BigDecimal budgetAmount = budget == null ? null : budget.getAmount();
-        exRepo.findAllByCategoryIdAndMonth(category.getCategoryId(), month, year)
+        exRepo.findAllByCategoryIdAndMonth(category.getId(), month, year)
                 .forEach((e) -> amountSpent.add(e.getAmount()));
         BigDecimal remainingAmount = budget == null ? null : budgetAmount.subtract(amountSpent);
 
