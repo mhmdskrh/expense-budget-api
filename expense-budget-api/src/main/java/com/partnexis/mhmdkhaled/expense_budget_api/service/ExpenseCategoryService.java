@@ -16,8 +16,6 @@ import com.partnexis.mhmdkhaled.expense_budget_api.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
-// TODO: fetch userdetails from token
-
 @RequiredArgsConstructor
 @Service
 public class ExpenseCategoryService {

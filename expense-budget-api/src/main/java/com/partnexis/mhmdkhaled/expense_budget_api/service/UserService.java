@@ -36,8 +36,6 @@ public class UserService {
         var token = jwtService.generateToken(user);
 
         return new LoginResponse(token);
-
-        // TODO: configure jwt and return in login response
     }
 
     public LoginResponse login(LoginRequest request) {
